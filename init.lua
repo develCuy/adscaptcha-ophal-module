@@ -1,8 +1,6 @@
 local AdsCaptcha, _SERVER, add_js = require 'adscaptcha', _SERVER, add_js
 local acConfig, type = settings.adscaptcha, type
 
-local debug = debug
-
 module 'ophal.modules.adscaptcha'
 
 function form_alter(variables)
@@ -15,7 +13,7 @@ end
 function entity_before_save(variables)
   local res
 
-  if variables.type == 'comment' then
+  if variables.adscaptcha_challenge_field and variables.adscaptcha_response_field then
     res = AdsCaptcha.validateCaptcha(
       acConfig.captchaId,
       acConfig.privateKey,
