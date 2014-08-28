@@ -1,17 +1,19 @@
+_M = {
+}
+ophal.modules.adscaptcha = _M
+
 local config = settings.adscaptcha
 local AdsCaptcha, _SERVER, add_js = require 'adscaptcha', _SERVER, add_js
 local type = type
 
-module 'ophal.modules.adscaptcha'
-
-function form_alter(variables)
+function _M.form_alter(variables)
   if variables.id == 'comment_form' then
     add_js{'modules/adscaptcha/adscaptcha.js'}
     variables.elements[1 + #variables.elements] = {'markup', value = AdsCaptcha.getCaptcha(config.captchaId, config.publicKey), weight = -1}
   end
 end
 
-function entity_before_save(variables)
+function _M.entity_before_save(entity)
   local res
 
   if not config.entities[entity.type] then return end
@@ -31,3 +33,5 @@ function entity_before_save(variables)
     end
   end
 end
+
+return _M
