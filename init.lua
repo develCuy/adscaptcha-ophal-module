@@ -20,12 +20,12 @@ function _M.entity_before_save(entity)
 
   if not config.entities[entity.type] then return end
 
-  if variables.adscaptcha_challenge_field and variables.adscaptcha_response_field then
+  if entity.adscaptcha_challenge_field and entity.adscaptcha_response_field then
     res = AdsCaptcha.validateCaptcha(
       config.captchaId,
       config.privateKey,
-      variables.adscaptcha_challenge_field,
-      variables.adscaptcha_response_field,
+      entity.adscaptcha_challenge_field,
+      entity.adscaptcha_response_field,
       _SERVER 'REMOTE_ADDR'
     )
     if type(res) == 'table' and true == res.response then
