@@ -7,9 +7,11 @@ local AdsCaptcha, _SERVER, add_js = require 'adscaptcha', _SERVER, add_js
 local type = type
 
 function _M.form_alter(variables)
-  if variables.id == 'comment_form' then
-    add_js{'modules/adscaptcha/adscaptcha.js'}
-    variables.elements[1 + #variables.elements] = {'markup', value = AdsCaptcha.getCaptcha(config.captchaId, config.publicKey), weight = -1}
+  for entity_type in pairs(config.entities) do
+    if variables.id == entity_type .. '_create_form' or variables.id == entity_type .. '_edit_form' then
+      add_js{'modules/adscaptcha/adscaptcha.js'}
+      variables.elements[1 + #variables.elements] = {'markup', value = AdsCaptcha.getCaptcha(config.captchaId, config.publicKey), weight = -1}
+    end
   end
 end
 
